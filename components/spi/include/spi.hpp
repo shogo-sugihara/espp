@@ -176,7 +176,7 @@ protected:
   bool initialized_ = false;
   std::mutex mutex_;
   spi_device_handle_t spi_;
-  spi_host_device_t host_;
+  spi_host_device_t host_ = SPI2_HOST;
 };
 } // namespace espp
 
