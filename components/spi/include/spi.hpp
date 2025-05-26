@@ -31,6 +31,8 @@ public:
     uint8_t mode = 0;                     ///< SPI mode (CPOL, CPHA)
     uint32_t clk_speed = 1000 * 1000;     ///< SPI clock speed in hertz
     int input_delay = 0;                  ///< Delay timing between SCLK and MISO to read data (ns)
+    uint32_t flags = 0;                   ///< Bitwise OR of SPI_DEVICE_* flags
+    int queue_size = 13;                  ///< Transaction queue size. This sets how many transactions can be 'in the air' (queued using spi_device_queue_trans but not yet finished using spi_device_get_trans_result) at the same time
     bool auto_init = true;                ///< Automatically initialize I2C on construction
     espp::Logger::Verbosity log_level = espp::Logger::Verbosity::WARN; ///< Verbosity of logger
   };
@@ -93,8 +95,8 @@ public:
     device_config.clock_speed_hz = config_.clk_speed;
     device_config.mode = config_.mode;
     device_config.spics_io_num = config_.cs_io_num;
-    device_config.queue_size = 13;
-    device_config.flags = SPI_DEVICE_BIT_LSBFIRST;
+    device_config.queue_size = config_.queue_size;
+    device_config.flags = config_.flags;
 
     ret = spi_bus_add_device(host_, &device_config, &spi_);
     if (ret != ESP_OK) {
