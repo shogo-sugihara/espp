@@ -29,6 +29,7 @@ public:
     gpio_num_t miso_io_num = GPIO_NUM_NC; ///< MISO GPIO pin
     gpio_num_t cs_io_num = GPIO_NUM_NC;   ///< CS GPIO pin
     uint8_t mode = 0;                     ///< SPI mode (CPOL, CPHA)
+    uint8_t cs_delay = 0;                 ///< Delay timing between CS and SCLK (bit-cycles: 0-16)
     uint32_t clk_speed = 1000 * 1000;     ///< SPI clock speed in hertz
     int input_delay = 0;                  ///< Delay timing between SCLK and MISO to read data (ns)
     uint32_t flags = 0;                   ///< Bitwise OR of SPI_DEVICE_* flags
@@ -95,6 +96,8 @@ public:
     device_config.clock_speed_hz = config_.clk_speed;
     device_config.mode = config_.mode;
     device_config.spics_io_num = config_.cs_io_num;
+    device_config.cs_ena_pretrans = config_.cs_delay;
+    device_config.cs_ena_posttrans = config_.cs_delay;
     device_config.queue_size = config_.queue_size;
     device_config.flags = config_.flags;
 
